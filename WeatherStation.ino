@@ -45,7 +45,7 @@ void loop()
   Serial.print(" ");
   Serial.print(temp_c);
   Serial.print(" ");
-  Serial.print(pressure*0.01;
+  Serial.print(pressure*0.01);
   Serial.print(" ");
   Serial.print(humidity);
   Serial.print(" ");
