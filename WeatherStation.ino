@@ -40,7 +40,7 @@ void loop()
     speed_N_S+=analogRead(A_1_speed_N_S);
     speed_W_E+=analogRead(A_2_speed_W_E);
   }
-  double Speed = 0.1 * sqrt(abs((double) speed_W_E - 32700.0)+abs(((double)speed_N_S-20500.0)*1.6));
+  double Wind_Speed = 0.1 * sqrt(abs((double) speed_W_E - 32700.0)+abs(((double)speed_N_S-20500.0)*1.6)); // формула расчёта скорости ветра
   Serial.print(time);
   Serial.print(" ");
   Serial.print(temp_c);
@@ -51,11 +51,11 @@ void loop()
   Serial.print(" ");
   Serial.print(precipitation);
   Serial.print(" ");
-  Serial.print(speed_N_S);
+  Serial.print(speed_N_S);// вывод на экран speed_N_S и speed_W_E нужно для калибровки аналоговых датчиков давления для дальнейшей подстановки значений в формулу расчёта скорости ветра
   Serial.print(" ");
   Serial.print(speed_W_E);
   Serial.print(" ");
-  Serial.print(Speed);
+  Serial.print(Wind_Speed);
   Serial.print(" ");
   Serial.print("0 ");
   Serial.print("0 ");
