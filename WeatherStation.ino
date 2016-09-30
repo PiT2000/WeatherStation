@@ -14,8 +14,8 @@ Barometer myBarometer;
 float pressure;
 float temp_c;
 float humidity;
-float speed_N_S;
-float speed_W_E;
+//float speed_N_S;
+//float speed_W_E;
 float precipitation;
 long time;
 
