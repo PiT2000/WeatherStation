@@ -33,8 +33,8 @@ void loop()
   temp_c = sht1x.readTemperatureC();
   humidity = sht1x.readHumidity();
   precipitation = map(analogRead(A_0_precipitation), 1023, 0, 100, 0);
-  speed_N_S = analogRead(A_1_speed_N_S);
-  speed_W_E = analogRead(A_2_speed_W_E);
+  //speed_N_S = analogRead(A_1_speed_N_S);
+  //speed_W_E = analogRead(A_2_speed_W_E);
   time = millis();
     for(int i=0; i < 1024; i++){
     speed_N_S+=analogRead(A_1_speed_N_S);
@@ -51,10 +51,10 @@ void loop()
   Serial.print(" ");
   Serial.print(precipitation);
   Serial.print(" ");
-  Serial.print(speed_N_S);// вывод на экран speed_N_S и speed_W_E нужно для калибровки аналоговых датчиков давления для дальнейшей подстановки значений в формулу расчёта скорости ветра
-  Serial.print(" ");
-  Serial.print(speed_W_E);
-  Serial.print(" ");
+  //Serial.print(speed_N_S);// вывод на экран speed_N_S и speed_W_E нужно для калибровки аналоговых датчиков давления для дальнейшей подстановки значений в формулу расчёта скорости ветра
+  //Serial.print(" ");
+  //Serial.print(speed_W_E);
+  //Serial.print(" ");
   Serial.print(Wind_Speed);
   Serial.print(" ");
   Serial.print("0 ");
