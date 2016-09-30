@@ -1,64 +1,64 @@
+#include <Barometer.h>
 #include <SHT1x.h>
-#include "Barometer.h"
 #include <Wire.h>
 
-#define A_0_precipitation 0
-#define A_1_speed_N_S 1
-#define A_2_speed_W_E 2
-#define DataPin  10
-#define ClockPin 11
-SHT1x sht1x(DataPin, ClockPin);
+#define PRECIPITATION A0
+#define PNS A1
+#define PWE A2
 
-Barometer myBarometer;
+#define DATAPIN       10
+#define CLOCKPIN      11
 
-float pressure;
-float temp_c;
+SHT1x sht1x(DATAPIN, CLOCKPIN);
+
+Barometer _barometer;
+
+float temperature;
 float humidity;
-float speed_N_S;
-float speed_W_E;
-float precipitation;
-long time;
+float pressure;
 
 void setup()
 {
-   Serial.begin(9600);
-   myBarometer.init();
+  Serial.begin(9600);
+  _barometer.init();
 }
 
 void loop()
 {
-  unsigned long speed_N_S = 0;
-  unsigned long speed_W_E = 0;
-  pressure = myBarometer.bmp085GetPressure(myBarometer.bmp085ReadUP());
-  temp_c = sht1x.readTemperatureC();
-  humidity = sht1x.readHumidity();
-  precipitation = map(analogRead(A_0_precipitation), 1023, 0, 100, 0);
-  speed_N_S = analogRead(A_1_speed_N_S);
-  speed_W_E = analogRead(A_2_speed_W_E);
-  time = millis();
-    for(int i=0; i < 1024; i++){
-    speed_N_S+=analogRead(A_1_speed_N_S);
-    speed_W_E+=analogRead(A_2_speed_W_E);
-  }
-  double Wind_Speed = 0.1 * sqrt(abs((double) speed_W_E - 32700.0)+abs(((double)speed_N_S-20500.0)*1.6)); // формула расчёта скорости ветра
-  Serial.print(time);
+  temperature   = sht1x.readTemperatureC();
+  humidity      = sht1x.readHumidity();
+  pressure      = _barometer.bmp085GetPressure(_barometer.bmp085ReadUP());
+
+  Serial.print(temperature);
   Serial.print(" ");
-  Serial.print(temp_c);
-  Serial.print(" ");
-  Serial.print(pressure*0.01);
+  Serial.print(pressure * 0.01);
   Serial.print(" ");
   Serial.print(humidity);
   Serial.print(" ");
-  Serial.print(precipitation);
+  Serial.print(precipitation());
   Serial.print(" ");
-  Serial.print(speed_N_S);// вывод на экран speed_N_S и speed_W_E нужно для калибровки аналоговых датчиков давления для дальнейшей подстановки значений в формулу расчёта скорости ветра
+  Serial.print(windSpeed());
   Serial.print(" ");
-  Serial.print(speed_W_E);
+  Serial.print("0");
   Serial.print(" ");
-  Serial.print(Wind_Speed);
+  Serial.print("0");
   Serial.print(" ");
-  Serial.print("0 ");
-  Serial.print("0 ");
+  Serial.print("0");
+  Serial.print(" ");
   Serial.println(";");
-
 }
+
+float windSpeed() {
+  float pNS = 0;
+  float pWE = 0;
+  for (int i = 0; i < 1024; i++) {
+    pNS += analogRead(PNS);
+    pWE += analogRead(PWE);
+  }
+  return 0.1 * sqrt(abs(pWE - 32700.0) + abs((pNS - 20500.0) * 1.6));
+}
+
+int precipitation() {
+  return map(analogRead(PRECIPITATION), 1023, 0, 0, 100);
+}
+
